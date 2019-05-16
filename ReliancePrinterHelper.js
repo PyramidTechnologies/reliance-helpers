@@ -178,8 +178,21 @@ function ReliancePrinterHelper(matrixPattern, divisor, threshold) {
    * @returns {Array} Array of 8-bit integers representing the 1bpp conversion of the input image data.
    */
    this.raster = function(imageData, width, height) {
-     var dithered = dither(imageData, width, height);
-     return oneBpp(dithered, width, height);
+     try {
+       if (imageData.length == 0 || imageData.length % 4 != 0) {
+         throw 'imageData length is invalid';
+       }
+       if (!Number.isInteger(width) || width < 1) {
+         throw 'width value is invalid';
+       }
+       if (!Number.isInteger(height) || height < 1) {
+        throw 'height value is invalid';
+      }
+      var dithered = dither(imageData, width, height);
+      return oneBpp(dithered, width, height);
+     } catch(e) {
+       console.log(e);
+     }
    }
 }
 ReliancePrinterHelper.prototype = Object.create(ReliancePrinterHelper.prototype);
